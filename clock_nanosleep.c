@@ -51,21 +51,6 @@ static inline int64_t calcdiff(struct timespec t1, struct timespec t2)
 	return diff;
 }
 
-static int config_process()
-{
-	/* Set priority */
-	struct sched_param param = {};
-	param.sched_priority = 98;
-
-	printf("Using priority %i.\n", param.sched_priority);
-	if (sched_setscheduler(0, SCHED_FIFO, &param) == -1) {
-		perror("sched_setscheduler failed");
-		return -1;
-	}
-
-	return 0;
-}
-
 static int latency_target_fd = -1;
 static int32_t latency_target_value = 0;
 static void set_latency_target(void)
@@ -184,7 +169,7 @@ try_again:
 	return err;
 }
 
-static uint64_t diff, diff_us;
+static uint64_t diff_us;
 static uint64_t max = 0, min = 1000000, cycles;
 static double avg;
 static pthread_t thread;
